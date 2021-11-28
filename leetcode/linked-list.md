@@ -2,6 +2,7 @@
 
 + [Reverse Linked List](#reverse-linked-list)
 + [Middle of the Linked List](#middle-of-the-linked-list)
++ [Palindrome Linked List](#palindrome-linked-list)
 
 
 ## Reverse Linked List
@@ -184,5 +185,113 @@ public ListNode middleNode(ListNode head){
         tmp = tmp.next.next;
     }
     return slw;
+}
+```
+
+
+## Palindrome Linked List
+
+https://leetcode.com/problems/palindrome-linked-list/
+
+<details><summary>Test Cases</summary>
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+class Solution{
+    private Solution sol;
+    
+    @BeforeEach
+    void setSolution(){
+        sol = new Solution();
+    }
+    
+    @Test
+    void testEmptyList(){
+        assertTrue(sol.isPalindrome(buildLinkedList(List.of())));
+    }
+    
+    @Test
+    void testIsPalindrome(){
+        ListNode lst = buildLinkedList(List.of(1, 2, 3, 2, 1));
+        assertTrue(sol.isPalindrome(lst));
+    }
+    
+    @Test
+    void testIsNotPalindrome(){
+        ListNode lst = buildLinkedList(List.of(1, 2, 3, 2, 2));
+        assertFalse(sol.isPalindrome(lst));
+    }
+    
+    private ListNode buildLinkedList(List<Integer> src){
+        ListNode node = null;
+        ListNode prev = null;
+        for (int i = source.size() - 1; i >= 0; i--) {
+            node = new ListNode(source.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+```
+
+``` java
+import java.util.Objects;
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListNode listNode = (ListNode) o;
+        return val == listNode.val && Objects.equals(next, listNode.next);
+    }
+}
+```
+
+</details>
+
+
+```java
+private ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    while (head != null) {
+        ListNode next = head.next;
+        head.next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev;
+}
+        
+private ListNode middleNode(ListNode head){
+    ListNode slw = head;
+    ListNode tmp = head;
+    
+    while (tmp != null && tmp.next != null) {
+        slw = slw.next;
+        tmp = tmp.next.next;
+    }
+    return slw;
+}
+    
+public boolean isPalindrome(ListNode head) {
+    ListNode input = head;
+    ListNode reversed = reverse(middleNode(head));
+    while (reversed != null) {
+        if (input.val != reversed.val)
+            return false;
+        input = input.next;
+        reversed = reversed.next;
+    }
+    return true;
 }
 ```
