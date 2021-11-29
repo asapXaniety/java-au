@@ -4,6 +4,7 @@
 + [Middle of the Linked List](#middle-of-the-linked-list)
 + [Palindrome Linked List](#palindrome-linked-list)
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
++ [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
 
 
 ## Reverse Linked List
@@ -412,5 +413,119 @@ public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         }
         
         return res.next;
+}
+```
+
+
+## Intersection of Two Linked Lists
+
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+<details><summary>Test Cases</summary>
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.converter.ConvertWith;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SolutionTest {
+private Solution sol;
+
+    @BeforeEach
+    void setSolution() {
+        sol = new Solution();
+    }
+
+    @Test
+    void testGetEmptyIntersection() {
+        ListNode headA = buildLinkedList(List.of(1, 3, 5, 7);
+        ListNode headB = buildLinkedList(List.of(2, 4, 6, 8);
+        assertEquals(null, sol.getIntersectionNode(headA, headB));
+    }
+
+    @Test
+    void testGetNonEmptyIntersection() {
+        ListNode headA = buildLinkedList(List.of(1, 2, 4));
+        ListNode headB = buildLinkedList(List.of(3, 5, 6, 4));
+        assertEquals(4, sol.getIntersectionNode(headA, headB));
+    }
+    
+
+    private ListNode buildLinkedList(List<Integer> source) {
+        ListNode node = null;
+        ListNode prev = null;
+        for (int i = source.size() - 1; i >= 0; i--) {
+            node = new ListNode(source.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+```
+
+``` java
+import java.util.Objects;
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListNode listNode = (ListNode) o;
+        return val == listNode.val && Objects.equals(next, listNode.next);
+    }
+}
+```
+
+</details>
+
+
+```java
+private int getLength (ListNode list) {
+    int lenList = 0;
+    while (list != null) {
+        lenList += 1;
+        list = list.next;
+    }
+    return lenList;
+}
+
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
+    int lenA = getLength(headA);
+    int lenB = getLength(headB);
+
+    if (lenA < lenB) {
+        while (lenA != lenB) {
+            headB = headB.next;
+            lenB -= 1;
+        }
+    }
+
+    if (lenB < lenA) {
+        while (lenA != lenB) {
+            headA = headA.next;
+            lenA -= 1;
+        }
+    }
+
+    while (headA != null || headB != null) {
+        if (headA == headB) {
+            return headA;
+        } else {
+            headA = headA.next;
+            headB = headB.next;
+        }
+    }
+    return null;
 }
 ```
