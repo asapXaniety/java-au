@@ -5,7 +5,7 @@
 + [Palindrome Linked List](#palindrome-linked-list)
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
 + [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
-
++ [Sort List](#sort-list)
 
 ## Reverse Linked List
 
@@ -527,5 +527,132 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         }
     }
     return null;
+}
+```
+
+
+## Sort List
+
+https://leetcode.com/problems/sort-list/
+
+<details><summary>Test Cases</summary>
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.converter.ConvertWith;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SolutionTest {
+    private Solution sol;
+
+    @BeforeEach
+    void setSolution() {
+        sol = new Solution();
+    }
+
+    @Test
+    void testSortEmptyList() {
+        assertEquals(null, sol.sortList(null));
+    }
+
+    @Test
+    void testSortEquals() {
+        ListNode expected = buildLinkedList(List.of(1, 2, 3));
+        ListNode lst = buildLinkedList(List.of(1, 2, 3));
+        assertEquals(expected, sol.sortList(lst));
+    }
+
+    @Test
+    void testSortList() {
+        ListNode expected = buildLinkedList(List.of(-2, 0, 1, 4, 6));
+        ListNode lst = buildLinkedList(List.of(6, 4, 1, -2, 0));
+        assertEquals(expected, sol.sortList(lst));
+    }
+
+
+    private ListNode buildLinkedList(List<Integer> source) {
+        ListNode node = null;
+        ListNode prev = null;
+        for (int i = source.size() - 1; i >= 0; i--) {
+            node = new ListNode(source.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+```
+
+``` java
+import java.util.Objects;
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListNode listNode = (ListNode) o;
+        return val == listNode.val && Objects.equals(next, listNode.next);
+    }
+}
+```
+
+</details>
+
+
+```java
+public ListNode sortList(ListNode head) {
+
+    if (head == null || head.next == null)
+        return head;
+
+    ListNode prev = null, slow = head, fast = head;
+
+    while (fast != null && fast.next != null) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    prev.next = null;
+    ListNode l1 = sortList(head);
+    ListNode l2 = sortList(slow);
+
+    return merge(l1, l2);
+}
+
+public ListNode merge(ListNode list1, ListNode list2) {
+    ListNode new_lst = new ListNode();
+    ListNode res = new_lst;
+
+    while (list1 != null && list2 != null) {
+        if (list1.val <= list2.val){
+            new_lst.next = list1;
+            list1 = list1.next;
+            
+        } else {
+            new_lst.next = list2;
+            list2 = list2.next;
+        }
+        new_lst = new_lst.next;
+    }
+
+    if (list1 == null) {
+        new_lst.next = list2;
+    }
+
+    if (list2 == null) {
+        new_lst.next = list1;
+    }
+
+    return res.next;
 }
 ```
