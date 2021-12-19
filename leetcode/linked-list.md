@@ -6,6 +6,7 @@
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
 + [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
 + [Sort List](#sort-list)
++ [Reorder List](#reorder-list)
 
 ## Reverse Linked List
 
@@ -655,4 +656,88 @@ public ListNode merge(ListNode list1, ListNode list2) {
 
     return res.next;
 }
+```
+
+
+## Reorder List
+
+https://leetcode.com/problems/reorder-list/
+
+<details><summary>Test Cases</summary>
+
+``` java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+class SolutionTest {
+
+    private Solution sol;
+    
+    @BeforeEach
+    void setSolution() {
+        sol = new Solution();
+    }
+    
+    @Test
+    void testFirstReorderList() {
+        ListNode expected = ListNodeHandler.buildList(List.of(2, 3, 1, 4, 5));
+        ListNode testLst = ListNodeHandler.buildList(List.of(1, 2, 3, 4, 5));
+        solution.reorderList(testLst);
+        assertEquals(expected, testLst);
+    }
+    
+    @Test
+    void testSecondReorderList() {
+        ListNode expected = ListNodeHandler.buildList(List.of(1, 4, 3, 2));
+        ListNode testLst = ListNodeHandler.buildList(List.of(1, 2, 3, 4));
+        solution.reorderList(testLst);
+        assertEquals(expected, testLst);
+    }
+}
+
+class ListNodeHandler {
+    static ListNode buildList(List<Integer> src) {
+        ListNode prev = null;
+        ListNode node = null;
+        int d = src.size() - 1;
+        for (int i = d; i >= 0; i--) {
+            node = new ListNode(src.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+```
+
+</details>
+
+``` java
+public void reorderList(ListNode head) {
+        
+    if (head==null||head.next==null) 
+        return;
+    
+    Deque<ListNode> stack = new ArrayDeque<ListNode>();
+    ListNode node = head;
+    
+    while (node!=null) {
+        stack.push(node);
+        node = node.next;
+    }
+    
+    int cnt = (stack.size()-1)/2;
+    node = head;
+        
+    while (cnt-- > 0) {
+        ListNode top = stack.pop();
+        ListNode tmp = node.next;
+        node.next=top;
+        top.next=tmp;
+        node=tmp;
+    }
+    
+    stack.pop().next=null;
+    }
 ```
