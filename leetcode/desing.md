@@ -1,6 +1,7 @@
 # Design
 
 + [Implement Stack using Queues](#implement-stack-using-queues)
++ [Implement Queue using Stacks](#implement-queue-using-stacks)
 
 
 ## Implement Stack using Queues
@@ -94,6 +95,63 @@ class MyStack{
 
     public boolean empty(){
         return stack.isEmpty();
+    }
+}
+```
+
+## Implement Queue using Stacks
+
+https://leetcode.com/problems/implement-queue-using-stacks/
+
+<details><summary>Test Cases</summary>
+
+``` java 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+class MyQueueTest {
+
+    @Test
+    void testMyQueue() {
+        var queue = new MyQueue();
+        queue.push(1);
+        queue.push(2);
+        queue.push(3);
+        queue.pop();
+        List<Integer> lst = Arrays.asList(2, 3);
+        ArrayDeque<Integer> expected = new ArrayDeque<>(list);
+        Arrays.equals(expected.toArray(), queue.queue.toArray());
+    }
+}
+```
+
+</details>
+
+
+``` java
+class MyQueue {
+    Deque<Integer> queue;
+    
+    public MyQueue() {
+        queue = new ArrayDeque<>();
+    }
+    
+    public void push(int x) {
+        queue.addLast(x);
+    }
+    
+    public int pop() {
+        return queue.pop();
+    }
+    
+    public int peek() {
+        return queue.peek();
+    }
+    
+    public boolean empty() {
+        return queue.isEmpty();
     }
 }
 ```
