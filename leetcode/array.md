@@ -9,7 +9,7 @@ https://leetcode.com/problems/squares-of-a-sorted-array/
 
 <details><summary>Test Cases</summary>
 
-```java
+``` java
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
@@ -28,9 +28,10 @@ import java.util.Arrays;
     }
 }
 ```
+
 </details>
 
-```java
+``` java
 
 public int[] sortedSquares(int[] nums) {
 
