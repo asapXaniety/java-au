@@ -42,16 +42,37 @@ class SolutionTest {
 
 
 ``` java
-public List<String> topKFrequent(String[] words, int k) {
-    return Stream.of(words)
-            .sorted()
-            .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
-            .entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByKey())
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .limit(k)
-            .map(pair -> pair.getKey())
-            .collect(Collectors.toList());
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
+class Topk {
+    public static void main(String[] args) {
+        String[] example_1 = {"i", "love", "leetcode", "i", "love", "coding"};
+        System.out.println(Arrays.toString(example_1));
+        System.out.println(topKFrequent(example_1, 2));
+        String[] example_2 = {"the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"};
+        System.out.println(Arrays.toString(example_2));
+        System.out.println(topKFrequent(example_2, 4));
     }
+
+    public static List<String> topKFrequent(String[] words, int k) {
+        return Stream.of(words)
+                .sorted()
+                .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(k)
+                .map(pair -> pair.getKey())
+                .collect(Collectors.toList());
+    }
+}
 ```
